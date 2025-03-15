@@ -92,8 +92,6 @@ jobs:
       with:
         msystem: MINGW64
         update: true
-        install: >-
-          ${{ endsWith(matrix.only, '32') && 'mingw-w64-i686-libgnurx' || 'mingw-w64-x86_64-libgnurx' }}
 
     - uses: pypa/cibuildwheel@v2.17.0  # sync version with pip install cibuildwheel above
       timeout-minutes: 10

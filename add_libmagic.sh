@@ -26,7 +26,7 @@ install_precompiled() {
     # Debian https://packages.ubuntu.com/libmagic1
     # Alpine https://pkgs.alpinelinux.org/package/libmagic
     # RHEL https://git.almalinux.org/rpms/file
-    # Windows https://github.com/julian-r/file-windows
+    # Windows https://packages.msys2.org/base/mingw-w64-file
     if [ -n "$(which brew)" ]; then
         brew install libmagic
     elif [ -n "$(which apt-get)" ]; then
@@ -36,20 +36,8 @@ install_precompiled() {
         apk add --update libmagic
     elif [ -n "$(which dnf)" ]; then
         dnf --setopt install_weak_deps=false -y install file-libs
-    else
-        # windows (no install, just download into current working directory)
-        # could also consider install using `pacman`: https://packages.msys2.org/base/mingw-w64-file
-        # which would require an update of copy_libmagic below to account for new magic.mgc paths
-        python <<EOF
-import platform, sysconfig, io, zipfile, urllib.request
-assert platform.system() == "Windows"
-machine = "x86" if sysconfig.get_platform() == "win32" else "x64"
-url = f"https://github.com/julian-r/file-windows/releases/download/v5.44/file_5.44-build104-vs2022-{machine}.zip"
-print("Downloading", url)
-zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(url).read())).extractall(".")
-EOF
-        # check what was copied
-        ls -ltra
+    elif [ -n "$(which pacman)" ]; then
+        pacman -S "mingw-w64-$(python -c 'import sysconfig; print("i686" if sysconfig.get_platform() == "win32" else "x86_64")')-file"
     fi
 }
 
@@ -59,8 +47,8 @@ copy_libmagic() {
     # this python command relies on current working directory containing `./magic/loader.py`
     libmagic_path="$(python -c 'from magic.loader import load_lib; print(load_lib()._name)')" &&
     cp "${libmagic_path}" "magic" &&
-    # only on linux/macos: additionally copy compiled db into magic dir (prefer the one installed by install_source)
-    ( ( cp "/usr/local/share/misc/magic.mgc" "magic" || cp "/usr/share/misc/magic.mgc" "magic" ) || true ) &&
+    # additionally copy compiled db into magic dir (prefer the one installed by install_source)
+    ( ( ( cp "/usr/local/share/misc/magic.mgc" "magic" || cp "/usr/share/misc/magic.mgc" "magic" ) || cp "/mingw64/share/misc/magic.mgc" "magic" ) || true ) &&
     # check what was copied
     ls -ltra magic
 }
