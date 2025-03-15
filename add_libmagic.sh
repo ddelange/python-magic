@@ -3,8 +3,10 @@
 set -euxo pipefail
 
 install_source() {
-    # skip on Windows for now
-    python -c 'import platform; assert platform.system() != "Windows"' || exit 1
+    if [ -n "$(which pacman)" ]; then
+        # install regex headers on windows
+        pacman -S "mingw-w64-$(python -c 'import sysconfig; print("i686" if sysconfig.get_platform() == "win32" else "x86_64")')-libgnurx"
+    fi
     # install from source
     # https://www.darwinsys.com/file/
     # https://github.com/file/file/blob/FILE5_46/INSTALL#L51
