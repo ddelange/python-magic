@@ -36,8 +36,9 @@ install_precompiled() {
         apk add --update libmagic
     elif [ -n "$(which dnf)" ]; then
         dnf --setopt install_weak_deps=false -y install file-libs
-    elif [ -n "$(which pacman)" ]; then
-        pacman -S "mingw-w64-$(python -c 'import sysconfig; print("i686" if sysconfig.get_platform() == "win32" else "x86_64")')-file"
+    elif [ -n "$(which msys2)" ]; then
+        pkg="mingw-w64-$(python -c 'import sysconfig; print("i686" if sysconfig.get_platform() == "win32" else "x86_64")')-file"
+        msys2 -c "pacman -Sy ${pkg}"
     fi
 }
 
