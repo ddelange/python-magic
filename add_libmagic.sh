@@ -36,9 +36,12 @@ install_precompiled() {
         apk add --update libmagic
     elif [ -n "$(which dnf)" ]; then
         dnf --setopt install_weak_deps=false -y install file-libs
-    elif [ -n "$(which msys2)" ]; then
+    elif python -c 'import platform; assert platform.system() == "Windows"'; then
         pkg="mingw-w64-$(python -c 'import sysconfig; print("i686" if sysconfig.get_platform() == "win32" else "x86_64")')-file"
-        msys2 -c "pacman -Sy ${pkg}"
+        pip install msys2dl
+        msys2dl extract --output / ${pkg}
+        # this is a libmagic dependency which also needs to be packaged
+        cp "/mingw64/bin/libsystre-0.dll" "magic"
     fi
 }
 
