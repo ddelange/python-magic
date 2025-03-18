@@ -94,8 +94,6 @@ jobs:
       uses: msys2/setup-msys2@v2.27.0
       with:
         msystem: ${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}
-        update: true
-        location: D:\
         install: >-
           ${{ endsWith(matrix.only, '32') && 'mingw-w64-i686-file' || 'mingw-w64-x86_64-file' }}
 
@@ -109,7 +107,6 @@ jobs:
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libasprintf-0.dll" "magic"
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libintl-8.dll" "magic"
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libatomic-1.dll" "magic"
-        cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libgcc_s_seh-1.dll" "magic"
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libgomp-1.dll" "magic"
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libquadmath-0.dll" "magic"
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libstdc++-6.dll" "magic"
