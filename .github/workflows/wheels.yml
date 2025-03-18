@@ -113,7 +113,6 @@ jobs:
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libstdc++-6.dll" "magic"
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libcharset-1.dll" "magic"
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libiconv-2.dll" "magic"
-        cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libwinpthread-1.dll" "magic"
 
     - uses: pypa/cibuildwheel@v2.17.0  # sync version with pip install cibuildwheel above
       timeout-minutes: 10

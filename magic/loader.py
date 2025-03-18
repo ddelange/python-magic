@@ -89,6 +89,7 @@ def _lib_candidates():
 
 
 def load_lib():
+    os.environ['PATH'] = here + os.pathsep + os.environ['PATH']  # for DLLs in site-packages
     exc = []
     for lib in _lib_candidates():
         # find_library returns None when lib not found
