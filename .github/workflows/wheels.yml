@@ -117,7 +117,7 @@ jobs:
     - name: Copy additional 32-bit runtime DLLs
       if: runner.os == 'Windows' && endsWith(matrix.only, '32')
       run: |
-        cp "/msys64/mingw32/bin/libwinpthread-1.dll" "magic"
+        cp "/msys64/mingw32/bin/libgcc_s_dw2-1.dll" "magic"
 
     - uses: pypa/cibuildwheel@v2.17.0  # sync version with pip install cibuildwheel above
       timeout-minutes: 10
