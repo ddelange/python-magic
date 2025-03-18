@@ -58,7 +58,7 @@ copy_libmagic() {
 }
 
 # skip windows (taken care of separately in wheels.yml)
-python -c 'import platform; assert platform.system() != "Windows"' || exit 0
+python -c 'import platform; assert platform.system() != "Windows"' || ( echo "skipping on windows" && exit 0 )
 # prefer a recent build from source
 install_source || install_precompiled
 # files to be copied into the wheel
