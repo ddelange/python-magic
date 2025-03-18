@@ -93,7 +93,7 @@ jobs:
       if: runner.os == 'Windows'
       uses: msys2/setup-msys2@v2
       with:
-        msystem: MINGW64
+        msystem: ${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}
         update: true
         location: D:\
         install: >-
@@ -102,10 +102,9 @@ jobs:
     - name: Copy Windows ddl and mgc
       if: runner.os == 'Windows'
       run: |
-        ls /msys64
-        cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/share/misc/magic.mgc" "magic"
-        cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libmagic-1.dll" "magic"
-        cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libsystre-0.dll" "magic"
+        cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/share/misc/magic.mgc" "magic"
+        cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libmagic-1.dll" "magic"
+        cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libsystre-0.dll" "magic"
 
     - uses: pypa/cibuildwheel@v2.17.0  # sync version with pip install cibuildwheel above
       timeout-minutes: 10
