@@ -94,6 +94,7 @@ jobs:
       uses: msys2/setup-msys2@v2.27.0
       with:
         msystem: ${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}
+        location: D:\
         install: >-
           ${{ endsWith(matrix.only, '32') && 'mingw-w64-i686-file' || 'mingw-w64-x86_64-file' }}
 
