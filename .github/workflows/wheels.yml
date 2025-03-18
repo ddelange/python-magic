@@ -97,7 +97,7 @@ jobs:
 
     - name: Copy Windows ddl and mgc
       if: runner.os == 'Windows'
-      run:
+      run: |
         cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/share/misc/magic.mgc" "magic"
         cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libmagic-1.dll" "magic"
         cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libsystre-0.dll" "magic"
