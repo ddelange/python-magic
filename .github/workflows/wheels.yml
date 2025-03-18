@@ -86,12 +86,21 @@ jobs:
       if: runner.os == 'Linux'
       uses: docker/setup-qemu-action@v3
 
-    - name: Setup MSYS2 and install regex
+    - name: Setup MSYS2 and install file
       if: runner.os == 'Windows'
       uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64
         update: true
+        install: >-
+          ${{ endsWith(matrix.only, '32') && 'mingw-w64-i686-file' || 'mingw-w64-x86_64-file' }}
+
+    - name: Copy Windows ddl and mgc
+      if: runner.os == 'Windows'
+      run:
+        cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/share/misc/magic.mgc" "magic"
+        cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libmagic-1.dll" "magic"
+        cp "/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libsystre-0.dll" "magic"
 
     - uses: pypa/cibuildwheel@v2.17.0  # sync version with pip install cibuildwheel above
       timeout-minutes: 10
