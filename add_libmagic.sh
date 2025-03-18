@@ -26,7 +26,6 @@ install_precompiled() {
     # Debian https://packages.ubuntu.com/libmagic1
     # Alpine https://pkgs.alpinelinux.org/package/libmagic
     # RHEL https://git.almalinux.org/rpms/file
-    # Windows https://packages.msys2.org/base/mingw-w64-file
     if [ -n "$(which brew)" ]; then
         brew install libmagic
     elif [ -n "$(which apt-get)" ]; then
@@ -36,12 +35,6 @@ install_precompiled() {
         apk add --update libmagic
     elif [ -n "$(which dnf)" ]; then
         dnf --setopt install_weak_deps=false -y install file-libs
-    elif python -c 'import platform; assert platform.system() == "Windows"'; then
-        pkg="mingw-w64-$(python -c 'import sysconfig; print("i686" if sysconfig.get_platform() == "win32" else "x86_64")')-file"
-        pip install msys2dl
-        msys2dl extract --output / ${pkg}
-        # this is a libmagic dependency which also needs to be packaged
-        cp "/mingw64/bin/libsystre-0.dll" "magic"
     fi
 }
 
@@ -52,7 +45,7 @@ copy_libmagic() {
     libmagic_path="$(python -c 'from magic.loader import load_lib; print(load_lib()._name)')" &&
     cp "${libmagic_path}" "magic" &&
     # additionally copy compiled db into magic dir (prefer the one installed by install_source)
-    ( ( ( cp "/usr/local/share/misc/magic.mgc" "magic" || cp "/usr/share/misc/magic.mgc" "magic" ) || cp "/mingw64/share/misc/magic.mgc" "magic" ) || true ) &&
+    ( ( cp "/usr/local/share/misc/magic.mgc" "magic" || cp "/usr/share/misc/magic.mgc" "magic" ) || true ) &&
     # check what was copied
     ls -ltra magic
 }
