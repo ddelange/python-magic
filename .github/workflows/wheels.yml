@@ -115,7 +115,6 @@ jobs:
         # add compiled libmagic to the build directory (to include in the wheel)
         CIBW_BEFORE_BUILD_MACOS: sudo -E bash add_libmagic.sh
         CIBW_BEFORE_BUILD_LINUX: bash add_libmagic.sh
-        CIBW_BEFORE_BUILD_WINDOWS: pip install -U setuptools
         # build macos wheels with maximum backwards compatibility (gcc -mmacosx-version-min flag)
         MACOSX_DEPLOYMENT_TARGET: ${{ ( endsWith( matrix.only, 'arm64' ) && '11.0' ) || '10.9' }}
         # simple smoke test run on each wheel: this is an HLS MP4 video, only recognised in recent versions of libmagic
