@@ -52,6 +52,7 @@ def _lib_candidates_macos():
 
 def _lib_candidates_windows():
     """Yield possible libmagic library names on Windows."""
+    os.environ['PATH'] = here + os.pathsep + os.environ['PATH']  # for DLLs in site-packages
     fnames = (
         "libmagic",
         "magic1",
@@ -89,7 +90,6 @@ def _lib_candidates():
 
 
 def load_lib():
-    os.environ['PATH'] = here + os.pathsep + os.environ['PATH']  # for DLLs in site-packages
     exc = []
     for lib in _lib_candidates():
         # find_library returns None when lib not found
