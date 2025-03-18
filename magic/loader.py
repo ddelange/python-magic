@@ -52,7 +52,6 @@ def _lib_candidates_macos():
 
 def _lib_candidates_windows():
     """Yield possible libmagic library names on Windows."""
-    os.environ['PATH'] = here + os.pathsep + os.environ['PATH']  # for DLLs in site-packages
     fnames = (
         "libmagic",
         "magic1",
