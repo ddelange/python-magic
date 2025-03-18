@@ -92,6 +92,7 @@ jobs:
       with:
         msystem: MINGW64
         update: true
+        location: D:\
         install: >-
           ${{ endsWith(matrix.only, '32') && 'mingw-w64-i686-file' || 'mingw-w64-x86_64-file' }}
 
