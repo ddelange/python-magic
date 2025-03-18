@@ -115,9 +115,10 @@ jobs:
         cp "/msys64/${{ endsWith(matrix.only, '32') && 'mingw32' || 'mingw64' }}/bin/libiconv-2.dll" "magic"
 
     - name: Analyze DLL dependencies
-      if: runner.os == 'Windows' && endsWith(matrix.only, '32')
+      if: runner.os == 'Windows'
+      shell: msys2 {0}
       run: |
-        /msys64/mingw32/bin/objdump -p "magic/libmagic-1.dll" | grep "DLL"
+        objdump -p "magic/libmagic-1.dll" | grep "DLL"
 
     - uses: pypa/cibuildwheel@v2.17.0  # sync version with pip install cibuildwheel above
       timeout-minutes: 10
